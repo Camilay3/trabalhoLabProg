@@ -34,6 +34,7 @@ int main(int argc, char **argv)
 
     //função reconstruir arvore
 
+    quadtree *mapa = reconstruirArvore(fp);
     fclose(fp);
 
     unsigned char *pData = malloc(colunas * linhas * sizeof(unsigned char));
@@ -50,4 +51,48 @@ int main(int argc, char **argv)
     free(mat);
     free(pData);
     return 0;
+}
+
+quadtree* reconstruirArvore(FILE *bitstream)
+{
+    int tipo = fgetc(bitstream);
+    if (tipo == EOF) {
+        fprintf(stderr, "Erro: fim inesperado no bitstream.\n");
+        return NULL;
+    }
+
+    quadtree *n = malloc(sizeof(quadtree));
+    if (!n) {
+        perror("malloc");
+        return NULL;
+    }
+
+    n->no = n->ne = n->so = n->se = NULL;
+
+    if (tipo == 0 || tipo == '0') { //ver se essa verificação é necessaria
+        
+        n->raiz = 0;
+        int v = fgetc(bitstream);
+        if (v == EOF) {
+            fprintf(stderr, "Erro: valor de folha ausente.\n");
+            free(n);
+            return NULL;
+        }
+        n->valor = (unsigned char)v;
+        return n;
+    }
+    else if (tipo == 1 || tipo == '1') {
+
+        n->raiz = 1;
+        n->no = reconstruirArvore(bitstream);
+        n->ne = reconstruirArvore(bitstream);
+        n->so = reconstruirArvore(bitstream);
+        n->se = reconstruirArvore(bitstream);
+        return n;
+    }
+    else {
+        fprintf(stderr, "Erro: byte inválido na árvore: %d\n", tipo);
+        free(n);
+        return NULL;
+    }
 }
