@@ -2,7 +2,7 @@
 #define CODIFICADOR_H
 
 #include <stdio.h>
-
+#define LIMITE 20
 typedef struct quadtree {
     int raiz;                        
     unsigned char valor;             
