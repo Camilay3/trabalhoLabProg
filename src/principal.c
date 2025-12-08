@@ -1,6 +1,6 @@
-#include "codificador.h"
-#include "pgm.h"
-#include "decodificador.h"
+#include "../include/codificador.h"
+#include "../include/pgm.h"
+#include "../include/decodificador.h"
 #include <stdio.h>
 #include <stdlib.h>
 int main(int argc, char **argv)
@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 
     unsigned char **matriz = converter_para_matriz(img);
 
-    printf("Construindo quadtree (musiquinha de elevador)(limite = %.2f)...\n", LIMITE);
+    printf("Construindo quadtree (musiquinha de elevador)(limite = %d)...\n", LIMITE);
     quadtree *arvore = construtortree(matriz, 0, 0, img.r, LIMITE);
 
     FILE *fp = fopen(bitstream, "wb");

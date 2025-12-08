@@ -2,12 +2,7 @@
 #define DECODER_H
 
 #include <stdio.h>
-
-typedef struct quadtree {
-    int raiz;
-    unsigned char valor;
-    struct quadtree *no, *ne, *so, *se;
-} quadtree;
+#include "struct.h"
 
 quadtree* reconstruirArvore(FILE *bitstream);
 void reconstruirImagem(quadtree *q,unsigned char **img, int x, int y, int tamanho);

@@ -12,13 +12,9 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "include/pgm.h"
-#include "include/decodificador.h"
-typedef struct quadtree {
-    int raiz;                        
-    unsigned char valor;             
-    struct quadtree *no, *ne, *so, *se;
-} quadtree;
+#include "../include/struct.h"
+#include "../include/pgm.h"
+#include "../include/decodificador.h"
 quadtree* reconstruirArvore(FILE *bitstream)
 {
     int tipo = fgetc(bitstream);

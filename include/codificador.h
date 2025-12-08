@@ -3,12 +3,7 @@
 
 #include <stdio.h>
 #define LIMITE 20
-typedef struct quadtree {
-    int raiz;                        
-    unsigned char valor;             
-    struct quadtree *no, *ne, *so, *se;  
-} quadtree;
-
+#include "struct.h"
 
 struct pgm;
 void readPGMImage(struct pgm *pio, char *filename);
