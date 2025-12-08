@@ -43,9 +43,7 @@ int main(int argc, char **argv)
         perror("Erro ao abrir bitstream");
         return 1;
     }
-
-    //função reconstruir arvore
-
+    
     quadtree *mapa = reconstruirArvore(fp);
     fclose(fp);
 
@@ -106,5 +104,31 @@ quadtree* reconstruirArvore(FILE *bitstream)
         fprintf(stderr, "Erro: byte inválido na árvore: %d\n", tipo);
         free(n);
         return NULL;
+    }
+}
+void colorirBloco(unsigned char **img,int x, int y, int tam,unsigned char valor){
+    for (int i = 0; i < tam; i++){
+        for (int j = 0; j < tam; j++){
+            img[x + i][y + j] = valor;
+        }
+    }
+
+}
+
+void reconstruirImagem(quadtree *q,unsigned char **img, int x, int y, int tamanho)
+{
+    if (q == NULL){ 
+        return;
+    }
+    if (q->raiz == 0) {
+        colorirBloco(img, x, y, tamanho, q->valor);
+        return;
+    }
+    int h = tamanho / 2;
+    if(q -> raiz ==1){ 
+        reconstruirImagem(q->no, img, x,     y,     h);
+        reconstruirImagem(q->ne, img, x,     y + h, h);
+        reconstruirImagem(q->so, img, x + h, y,     h); 
+        reconstruirImagem(q->se, img, x + h, y + h, h);
     }
 }
