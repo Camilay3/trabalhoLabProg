@@ -51,8 +51,8 @@ double mse(unsigned char **img, int x, int y, int tamanho, double media) {
             double dif = img[x + i][y + j] - media;
             erro += dif * dif;
         }
+    }
     return erro / (tamanho * tamanho);
-}
 }
 quadtree *construtortree(unsigned char **img, int x, int y, int tamanho, double limite){
     quadtree *node = malloc(sizeof(quadtree));
