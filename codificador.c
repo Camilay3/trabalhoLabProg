@@ -13,124 +13,218 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "pgm.h"
+#include "codificador.h"
 
-typedef struct quadtree {
-    int raiz;
-    unsigned char valor;
-    struct quadtree *so, *sl, *io, *il;
-} quadtree;
+// -----------------------------
+// Estruturas
+// -----------------------------
 
-FILE *out, *in;
-unsigned char buffer = 0;
-int buffer_pos = 0;
+// -----------------------------
+// Funções PGM
+// -----------------------------
+void readPGMImage(struct pgm *pio, char *filename) {
+    FILE *fp;
+    char ch;
 
-// Escrita de bits
-void escrevebit(int bit) {
-    buffer = (buffer << 1) | (bit & 1);
-    buffer_pos++;
-    if (buffer_pos == 8) {
-        fputc(buffer, out);
-        buffer = 0;
-        buffer_pos = 0;
-    }
-}
-
-// Escrita de byte
-void escrevebyte(unsigned char b) {
-    if (buffer_pos != 0) { // flush parcial
-        buffer <<= (8 - buffer_pos);
-        fputc(buffer, out);
-        buffer = 0;
-        buffer_pos = 0;
-    }
-    fputc(b, out);
-}
-
-// Checagem final
-void checagembits() {
-    if (buffer_pos > 0) {
-        buffer <<= (8 - buffer_pos);
-        fputc(buffer, out);
-        buffer = 0;
-        buffer_pos = 0;
-    }
-}
-
-// Leitura de bits
-int lerbit() {
-    static int bit_pos = 0;
-    static unsigned char leitor_buffer = 0;
-
-    if (bit_pos == 0) {
-        int c = fgetc(in);
-        if (c == EOF) return -1;
-        leitor_buffer = (unsigned char)c;
-        bit_pos = 8;
+    if (!(fp = fopen(filename, "rb"))) {
+        perror("Erro ao abrir PGM");
+        exit(1);
     }
 
-    int bit = (leitor_buffer >> 7) & 1;
-    leitor_buffer <<= 1;
-    bit_pos--;
-    return bit;
+    if ((ch = getc(fp)) != 'P') {
+        puts("Imagem não está no formato PGM");
+        exit(2);
+    }
+
+    pio->tipo = getc(fp) - '0';
+    fseek(fp, 1, SEEK_CUR);
+
+    while ((ch = getc(fp)) == '#') {
+        while ((ch = getc(fp)) != '\n');
+    }
+
+    fseek(fp, -1, SEEK_CUR);
+
+    fscanf(fp, "%d %d", &pio->c, &pio->r);
+    fscanf(fp, "%d", &pio->mv);
+    fseek(fp, 1, SEEK_CUR);
+
+    pio->pData = (unsigned char *)malloc(pio->r * pio->c * sizeof(unsigned char));
+    if (!pio->pData) {
+        perror("malloc pData");
+        exit(1);
+    }
+
+    if (pio->tipo == 5) { // PGM binário
+        fread(pio->pData, sizeof(unsigned char), pio->r * pio->c, fp);
+    } else if (pio->tipo == 2) { // PGM ASCII
+        for (int k = 0; k < pio->r * pio->c; k++)
+            fscanf(fp, "%hhu", pio->pData + k);
+    } else {
+        puts("Formato PGM não suportado");
+        exit(1);
+    }
+
+    fclose(fp);
 }
 
-// Leitura de byte
-unsigned char lerbyte() {
-    return (unsigned char)fgetc(in);
+void writePGMImage(struct pgm *pio, char *filename) {
+    FILE *fp = fopen(filename, "wb");
+    if (!fp) {
+        perror("Erro ao salvar PGM");
+        exit(1);
+    }
+
+    fprintf(fp, "P5\n%d %d\n%d\n", pio->c, pio->r, pio->mv);
+    fwrite(pio->pData, sizeof(unsigned char), pio->c * pio->r, fp);
+    fclose(fp);
 }
 
-double medianormal(unsigned char **img, int x, int y, int tamanho){
-    int soma = 0;
+// -----------------------------
+// Função auxiliar: converte pData → matriz 2D
+// -----------------------------
+unsigned char **converter_para_matriz(struct pgm img) {
+    unsigned char **matriz = malloc(img.r * sizeof(unsigned char *));
+    if (!matriz) {
+        perror("malloc matriz");
+        exit(1);
+    }
 
-    for(int i = 0; i < tamanho; i++){
-        for(int j = 0; j < tamanho; j++){
-            soma += img[x + i][y + j];
+    for (int i = 0; i < img.r; i++) {
+        matriz[i] = malloc(img.c * sizeof(unsigned char));
+        if (!matriz[i]) {
+            perror("malloc linha");
+            exit(1);
         }
+        for (int j = 0; j < img.c; j++)
+            matriz[i][j] = img.pData[i * img.c + j];
     }
+    return matriz;
+}
 
+// -----------------------------
+// Funções do codificador (quadtree)
+// -----------------------------
+double media_simples(unsigned char **img, int x, int y, int tamanho) {
+    int soma = 0;
+    for (int i = 0; i < tamanho; i++)
+        for (int j = 0; j < tamanho; j++)
+            soma += img[x + i][y + j];
     return (double)soma / (tamanho * tamanho);
 }
 
-
-double mse(unsigned char **img, int x, int y, int tamanho, double media){
+double mse(unsigned char **img, int x, int y, int tamanho, double media) {
     double erro = 0;
-
-    for(int i = 0; i < tamanho; i++){
-        for(int j = 0; j < tamanho; j++){
+    for (int i = 0; i < tamanho; i++){ 
+        for (int j = 0; j < tamanho; j++) {
             double dif = img[x + i][y + j] - media;
             erro += dif * dif;
         }
-    }
-
     return erro / (tamanho * tamanho);
 }
 
-
-
-quadtree* construtortree(unsigned char **img, int x, int y, int tamanho, double limite) {
+quadtree *construtortree(unsigned char **img, int x, int y, int tamanho, double limite) {
     quadtree *node = malloc(sizeof(quadtree));
+    if (!node) {
+        perror("malloc quadtree");
+        exit(1);
+    }
 
-    double media = medianormal(img, x, y, tamanho);
-    double erro  = mse(img, x, y, tamanho, media);
+    double media = media_simples(img, x, y, tamanho);
+    double erro = mse(img, x, y, tamanho, media);
 
-    if (erro <= limite || tamanho == 1) { // nó folha
+    if (erro <= limite || tamanho == 1) {
         node->raiz = 0;
         node->valor = (unsigned char)(media + 0.5);
-        node->so = node->sl = node->io = node->il = NULL;
-
-        escrevebit(0);
-        escrevebyte(node->valor);
+        node->no = node->ne = node->so = node->se = NULL;
         return node;
     }
 
     node->raiz = 1;
-    escrevebit(1);
-
-    int h = tamanho/2;
-    node->so = construtortree(img, x,     y,     h, limite);
-    node->sl = construtortree(img, x,     y + h, h, limite);
-    node->io = construtortree(img, x + h, y,     h, limite);
-    node->il = construtortree(img, x + h, y + h, h, limite);
+    int h = tamanho / 2;
+    node->no = construtortree(img, x, y, h, limite);
+    node->ne = construtortree(img, x, y + h, h, limite);
+    node->so = construtortree(img, x + h, y, h, limite);
+    node->se = construtortree(img, x + h, y + h, h, limite);
 
     return node;
+}
+
+// -----------------------------
+// Salvar árvore em bitstream
+// -----------------------------
+void salvarArvore(quadtree *n, FILE *fp) {
+    if (!n) return;
+
+    if (n->raiz == 0) {
+        fputc(0, fp);          // folha
+        fputc(n->valor, fp);   // valor
+        return;
+    }
+
+    fputc(1, fp); // nó interno
+    salvarArvore(n->no, fp);
+    salvarArvore(n->ne, fp);
+    salvarArvore(n->so, fp);
+    salvarArvore(n->se, fp);
+}
+
+// -----------------------------
+// Liberar memória da árvore
+// -----------------------------
+void freeTree(quadtree *n) {
+    if (!n) return;
+    freeTree(n->no);
+    freeTree(n->ne);
+    freeTree(n->so);
+    freeTree(n->se);
+    free(n);
+}
+
+// -----------------------------
+// MAIN
+// -----------------------------
+int main(int argc, char *argv[]) {
+    if (argc != 4) {
+        printf("Uso: %s <entrada.pgm> <saida.bit> <limite>\n", argv[0]);
+        return 1;
+    }
+
+    char *entradaPGM = argv[1];
+    char *saidaBIT = argv[2];
+    double limite = atof(argv[3]);
+
+    struct pgm img;
+    readPGMImage(&img, entradaPGM);
+
+    if (img.r != img.c) {
+        fprintf(stderr, "Erro: imagem precisa ser quadrada!\n");
+        free(img.pData);
+        return 1;
+    }
+
+    unsigned char **matriz = converter_para_matriz(img);
+
+    printf("Construindo quadtree (limite = %.2f)...\n", limite);
+    quadtree *arvore = construtortree(matriz, 0, 0, img.r, limite);
+
+    FILE *fp = fopen(saidaBIT, "wb");
+    if (!fp) {
+        perror("Erro ao criar arquivo .bit");
+        return 1;
+    }
+    salvarArvore(arvore, fp);
+    fclose(fp);
+
+    printf("Bitstream salvo com sucesso em %s!\n", saidaBIT);
+
+    // liberar memória
+    for (int i = 0; i < img.r; i++)
+        free(matriz[i]);
+    free(matriz);
+    freeTree(arvore);
+    free(img.pData);
+
+    return 0;
 }
