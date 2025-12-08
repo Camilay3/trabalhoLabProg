@@ -35,7 +35,7 @@ quadtree* reconstruirArvore(FILE *bitstream)
 
     n->no = n->ne = n->so = n->se = NULL;
 
-    if (tipo == 0 || tipo == '0') { //ver se essa verificação é necessaria
+    if (tipo == 0 || tipo == '0') { 
         
         n->raiz = 0;
         int v = fgetc(bitstream);
