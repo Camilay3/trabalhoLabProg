@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 
     reconstruirImagem(mapa, mat, 0, 0, colunas);
 
-    //função salvar pgm
+    salvarPGM(saidaPGM, pData, colunas, linhas, valor_max);
 
     printf("Imagem reconstruída salva em %s\n", saidaPGM);
     free(mat);
@@ -131,4 +131,17 @@ void reconstruirImagem(quadtree *q,unsigned char **img, int x, int y, int tamanh
         reconstruirImagem(q->so, img, x + h, y,     h); 
         reconstruirImagem(q->se, img, x + h, y + h, h);
     }
+}
+int salvarPGM(const char *nome,unsigned char *pData,int colunas, int linhas,int valor_max){
+    FILE *fp = fopen(nome, "wb");
+    if (fp == NULL) {
+        perror("Erro ao criar PGM");
+        return 1;
+    }
+    fprintf(fp, "P5\n%d %d\n%d\n", colunas, linhas, valor_max);
+
+    fwrite(pData, 1, colunas * linhas, fp);
+
+    fclose(fp);
+    return 0;
 }
