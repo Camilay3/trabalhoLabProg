@@ -13,6 +13,7 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 #include <stdio.h>
 #include <stdlib.h>
 #include "pgm.h"
+#include "decodificador.h"
 
 typedef struct quadtree {
     int raiz;                        
