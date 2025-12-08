@@ -53,7 +53,7 @@ int main(int argc, char **argv)
         *(mat +i) = pData + (i * colunas);
     }
 
-    //funçaõ reconstruir imagem
+    reconstruirImagem(mapa, mat, 0, 0, colunas);
 
     //função salvar pgm
 
