@@ -84,39 +84,36 @@ unsigned char lerbyte(FILE *in) {
 }
 
 
-unsigned char **converter_para_matriz(struct pgm img)
+unsigned char **converterParaMatriz(struct pgm img)
 {
     unsigned char **matriz = malloc(img.r * sizeof(unsigned char *));
-    if (!matriz)
-    {
-        perror("malloc matriz");
+    if (!matriz){
+        perror("Erro alocar memória da matriz");
         exit(1);
     }
 
-    for (int i = 0; i < img.r; i++)
-    {
+    for (int i = 0; i < img.r; i++) {
         matriz[i] = malloc(img.c * sizeof(unsigned char));
         if (!matriz[i])
         {
-            perror("malloc linha");
-            exit(1);
+            perror("Erro alocar memória da matriz(linha)");
+            exit(2);
         }
-        for (int j = 0; j < img.c; j++)
-            matriz[i][j] = img.pData[i * img.c + j];
+        for (int j = 0; j < img.c; j++) matriz[i][j] = img.pData[i * img.c + j];
     }
     return matriz;
 }
+
 // Funções do codificador (quadtree)
-double media_simples(unsigned char **img, int x, int y, int tamanho)
-{
+double mediaSimples(unsigned char **img, int x, int y, int tamanho) {
     int soma = 0;
-    for (int i = 0; i < tamanho; i++)
-        for (int j = 0; j < tamanho; j++)
-            soma += img[x + i][y + j];
+    for (int i = 0; i < tamanho; i++) {
+        for (int j = 0; j < tamanho; j++) soma += img[x + i][y + j];
+    }
     return (double)soma / (tamanho * tamanho);
 }
-double mse(unsigned char **img, int x, int y, int tamanho, double media)
-{
+
+double mse(unsigned char **img, int x, int y, int tamanho, double media) {
     double erro = 0;
     for (int i = 0; i < tamanho; i++)
     {
@@ -128,16 +125,15 @@ double mse(unsigned char **img, int x, int y, int tamanho, double media)
     }
     return erro / (tamanho * tamanho);
 }
-quadtree *construtortree(unsigned char **img, int x, int y, int tamanho, double limite)
-{
+
+quadtree *construtorTree(unsigned char **img, int x, int y, int tamanho, double limite) {
     quadtree *node = malloc(sizeof(quadtree));
-    if (!node)
-    {
-        perror("malloc quadtree");
-        exit(1);
+    if (!node) {
+        perror("Erro ao alocar memória do quadtree");
+        exit(3);
     }
 
-    double media = media_simples(img, x, y, tamanho);
+    double media = mediaSimples(img, x, y, tamanho);
     double erro = mse(img, x, y, tamanho, media);
 
     if (erro <= limite || tamanho == 1)
@@ -150,11 +146,11 @@ quadtree *construtortree(unsigned char **img, int x, int y, int tamanho, double 
 
     node->raiz = 1;
     int h = tamanho / 2;
-
-    node->no = construtortree(img, x, y, h, limite);
-    node->ne = construtortree(img, x, y + h, h, limite);
-    node->so = construtortree(img, x + h, y, h, limite);
-    node->se = construtortree(img, x + h, y + h, h, limite);
+    
+    node->no = construtorTree(img, x, y, h, limite);
+    node->ne = construtorTree(img, x, y + h, h, limite);
+    node->so = construtorTree(img, x + h, y, h, limite);
+    node->se = construtorTree(img, x + h, y + h, h, limite);
 
     return node;
 }
@@ -164,8 +160,7 @@ void salvarArvore(quadtree *n)
     if (!n)
         return;
 
-    if (n->raiz == 0)
-    {
+    if (n->raiz == 0){
         escrevebit(0);      // folha
         escrevebyte(n->valor); // valor
         return;

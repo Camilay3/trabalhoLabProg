@@ -1,3 +1,15 @@
+/**************************************************************************
+Alunos: 
+	- Camila Azevedo
+	- Mariana Silva
+	- Andrey Pereira
+	- Mateus Pinheiro
+
+Avaliacao 04: Trabalho Final
+04.505.23 − 2025.2 − Prof. Daniel Ferreira
+Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+***************************************************************************************/
+
 #ifndef CODIFICADOR_H
 #define CODIFICADOR_H
 
@@ -20,8 +32,8 @@ void checagembits(void);
 int lerbit(FILE *in);
 unsigned char lerbyte(FILE *in);
 
-unsigned char **converter_para_matriz(struct pgm img);
-double media_simples(unsigned char **img, int x, int y, int tamanho);
+unsigned char **converterParaMatriz(struct pgm img);
+double mediaSimples(unsigned char **img, int x, int y, int tamanho);
 double mse(unsigned char **img, int x, int y, int tamanho, double media);
 quadtree *construtortree(unsigned char **img, int x, int y,int tamanho, double limite);
 void salvarArvore(quadtree *n);

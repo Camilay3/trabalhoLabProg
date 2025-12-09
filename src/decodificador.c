@@ -17,8 +17,7 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 #include "../include/decodificador.h"
 #include "../include/codificador.h"
 void colorirBloco(unsigned char *img,int x, int y, int tam,unsigned char valor,int colunas);
-quadtree *reconstruirArvore(FILE *bitstream)
-{
+quadtree *reconstruirArvore(FILE *bitstream){
     int tipo = lerbit(bitstream);
     if (tipo == -1)
     {
@@ -27,16 +26,14 @@ quadtree *reconstruirArvore(FILE *bitstream)
     }
 
     quadtree *n = malloc(sizeof(quadtree));
-    if (!n)
-    {
-        perror("malloc");
+    if (n == NULL){
+        perror("Erro ao alocar memória");
         return NULL;
     }
 
     n->no = n->ne = n->so = n->se = NULL;
 
-    if (tipo == 0 )
-    {
+    if (tipo == 0 ){
 
         n->raiz = 0;
         int v = lerbyte(bitstream);
@@ -49,8 +46,7 @@ quadtree *reconstruirArvore(FILE *bitstream)
         n->valor = (unsigned char)v;
         return n;
     }
-    else if (tipo == 1 )
-    {
+    else if (tipo == 1 ){
 
         n->raiz = 1;
         n->no = reconstruirArvore(bitstream);
@@ -59,15 +55,13 @@ quadtree *reconstruirArvore(FILE *bitstream)
         n->se = reconstruirArvore(bitstream);
         return n;
     }
-    else
-    {
+    else{
         fprintf(stderr, "Erro: byte inválido na árvore: %d\n", tipo);
         free(n);
         return NULL;
     }
 }
-void reconstruirImagem(quadtree *q,unsigned char *img, int x, int y, int tamanho,int colunas)
-{
+void reconstruirImagem(quadtree *q,unsigned char *img, int x, int y, int tamanho,int colunas){
     if (q == NULL){ 
         return;
     }
@@ -76,7 +70,7 @@ void reconstruirImagem(quadtree *q,unsigned char *img, int x, int y, int tamanho
         return;
     }
     int h = tamanho / 2;
-    if(q -> raiz ==1){ 
+    if(q->raiz ==1){ 
         reconstruirImagem(q->no, img, x,     y,     h,colunas);
         reconstruirImagem(q->ne, img, x,     y + h, h,colunas);
         reconstruirImagem(q->so, img, x + h, y,     h,colunas); 

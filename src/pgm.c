@@ -26,7 +26,6 @@ void viewPGMImage(struct pgm *);
 void writePGMImage(struct pgm *, char *);
 
 // int main(int argc, char *argv[]){
-
 // 	struct pgm img;
 
 // 	if (argc!=3){
@@ -35,17 +34,13 @@ void writePGMImage(struct pgm *, char *);
 // 	}
 
 // 	readPGMImage(&img,argv[1]);
-
 // 	writePGMImage(&img, argv[2]);
-
 // 	viewPGMImage(&img);
 
 // 	return 0;
-
 // }
 
 void readPGMImage(struct pgm *pio, char *filename){
-
 	FILE *fp;
 	char ch;
 
@@ -60,7 +55,6 @@ void readPGMImage(struct pgm *pio, char *filename){
 	}
 	
 	pio->tipo = getc(fp)-48;
-	
 	fseek(fp,1, SEEK_CUR);
 
 	while((ch=getc(fp))=='#'){
@@ -95,7 +89,6 @@ void readPGMImage(struct pgm *pio, char *filename){
 	}
 	
 	fclose(fp);
-
 }
 
 void writePGMImage(struct pgm *pio, char *filename){
@@ -114,9 +107,7 @@ void writePGMImage(struct pgm *pio, char *filename){
 	fwrite(pio->pData, sizeof(unsigned char),pio->c * pio->r, fp);
 
 	fclose(fp);
-
 }
-
 
 void viewPGMImage(struct pgm *pio){
 	printf("Tipo: %d\n",pio->tipo);
