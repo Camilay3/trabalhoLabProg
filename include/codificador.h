@@ -2,25 +2,29 @@
 #define CODIFICADOR_H
 
 #include <stdio.h>
-#define LIMITE 20
+#define LIMITE 15.91
 #include "struct.h"
+
+extern FILE *out;
+extern unsigned char buffer;
+extern int buffer_pos;
 
 struct pgm;
 void readPGMImage(struct pgm *pio, char *filename);
 void writePGMImage(struct pgm *pio, char *filename);
 
+void escrevebit(int bit);
+void escrevebyte(unsigned char b);
+void checagembits(void);
+
+int lerbit(FILE *in);
+unsigned char lerbyte(FILE *in);
 
 unsigned char **converter_para_matriz(struct pgm img);
-
 double media_simples(unsigned char **img, int x, int y, int tamanho);
 double mse(unsigned char **img, int x, int y, int tamanho, double media);
-
-
 quadtree *construtortree(unsigned char **img, int x, int y,int tamanho, double limite);
-
-void salvarArvore(quadtree *n, FILE *fp);
-
-
+void salvarArvore(quadtree *n);
 void freeTree(quadtree *n);
 
 #endif
