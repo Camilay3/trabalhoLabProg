@@ -35,7 +35,7 @@ unsigned char lerbyte(FILE *in);
 unsigned char **converterParaMatriz(struct pgm img);
 double mediaSimples(unsigned char **img, int x, int y, int tamanho);
 double mse(unsigned char **img, int x, int y, int tamanho, double media);
-quadtree *construtortree(unsigned char **img, int x, int y,int tamanho, double limite);
+quadtree *construtorTree(unsigned char **img, int x, int y,int tamanho, double limite);
 void salvarArvore(quadtree *n);
 void freeTree(quadtree *n);
 
