@@ -1,9 +1,9 @@
 /**************************************************************************
-Alunos: 
-	- Camila Azevedo
-	- Mariana Silva
-	- Andrey Pereira
-	- Mateus Pinheiro
+Alunos:
+    - Camila Azevedo
+    - Mariana Silva
+    - Andrey Pereira
+    - Mateus Pinheiro
 
 Avaliacao 04: Trabalho Final
 04.505.23 − 2025.2 − Prof. Daniel Ferreira
@@ -15,27 +15,27 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 #include "../include/struct.h"
 #include "../include/pgm.h"
 #include "../include/decodificador.h"
-void colorirBloco(unsigned char *,int , int , int ,unsigned char ,int );
-quadtree* reconstruirArvore(FILE *bitstream)
-{
-    int tipo = fgetc(bitstream);
-    if (tipo == EOF) {
+#include "../include/codificador.h"
+
+void colorirBloco(unsigned char *img,int x, int y, int tam,unsigned char valor,int colunas);
+quadtree *reconstruirArvore(FILE *bitstream){
+    int tipo = lerbit(bitstream);
+    if (tipo == -1) {
         fprintf(stderr, "Erro: fim inesperado no bitstream.\n");
         return NULL;
     }
 
     quadtree *n = malloc(sizeof(quadtree));
-    if (n==NULL) {
-        perror("malloc");
+    if (n == NULL){
+        perror("Erro ao alocar memória");
         return NULL;
     }
 
     n->no = n->ne = n->so = n->se = NULL;
 
-    if (tipo == 0 || tipo == '0') { 
-        
+    if (tipo == 0){
         n->raiz = 0;
-        int v = fgetc(bitstream);
+        int v = lerbyte(bitstream);
         if (v == EOF) {
             fprintf(stderr, "Erro: valor de folha ausente.\n");
             free(n);
@@ -43,34 +43,28 @@ quadtree* reconstruirArvore(FILE *bitstream)
         }
         n->valor = (unsigned char)v;
         return n;
-    }
-    else if (tipo == 1 || tipo == '1') {
-
+    } else if (tipo == 1){
         n->raiz = 1;
         n->no = reconstruirArvore(bitstream);
         n->ne = reconstruirArvore(bitstream);
         n->so = reconstruirArvore(bitstream);
         n->se = reconstruirArvore(bitstream);
         return n;
-    }
-    else {
+    } else{
         fprintf(stderr, "Erro: byte inválido na árvore: %d\n", tipo);
         free(n);
         return NULL;
     }
 }
 
-void reconstruirImagem(quadtree *q,unsigned char *img, int x, int y, int tamanho,int colunas)
-{
-    if (q == NULL){ 
-        return;
-    }
+void reconstruirImagem(quadtree *q,unsigned char *img, int x, int y, int tamanho,int colunas){
+    if (q == NULL) return;
     if (q->raiz == 0) {
         colorirBloco(img, x, y, tamanho, q->valor,colunas);
         return;
     }
     int h = tamanho / 2;
-    if(q -> raiz ==1){ 
+    if(q->raiz ==1){ 
         reconstruirImagem(q->no, img, x,     y,     h,colunas);
         reconstruirImagem(q->ne, img, x,     y + h, h,colunas);
         reconstruirImagem(q->so, img, x + h, y,     h,colunas); 
@@ -84,7 +78,6 @@ void colorirBloco(unsigned char *img,int x, int y, int tam,unsigned char valor,i
             *(img + (x + i) * colunas + (y + j)) = valor;
         }
     }
-
 }
 
 int salvarPGM(const char *nome,unsigned char *pData,int colunas, int linhas,int valor_max){
