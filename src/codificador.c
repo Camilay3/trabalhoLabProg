@@ -13,8 +13,9 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "include/pgm.h"
-#include "include/codificador.h"
+#include "../include/struct.h"
+#include "../include/pgm.h"
+#include "../include/codificador.h"
 #define LIMITE 20
 
 // Função auxiliar: converte pData → matriz 2D

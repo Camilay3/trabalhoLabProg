@@ -25,24 +25,24 @@ void readPGMImage(struct pgm *, char *);
 void viewPGMImage(struct pgm *);
 void writePGMImage(struct pgm *, char *);
 
-int main(int argc, char *argv[]){
+// int main(int argc, char *argv[]){
 
-	struct pgm img;
+// 	struct pgm img;
 
-	if (argc!=3){
-		printf("Formato: \n\t %s <imagemEntrada.pgm> <imagemSaida.pgm>\n",argv[0]);
-		exit(1);
-	}
+// 	if (argc!=3){
+// 		printf("Formato: \n\t %s <imagemEntrada.pgm> <imagemSaida.pgm>\n",argv[0]);
+// 		exit(1);
+// 	}
 
-	readPGMImage(&img,argv[1]);
+// 	readPGMImage(&img,argv[1]);
 
-	writePGMImage(&img, argv[2]);
+// 	writePGMImage(&img, argv[2]);
 
-	viewPGMImage(&img);
+// 	viewPGMImage(&img);
 
-	return 0;
+// 	return 0;
 
-}
+// }
 
 void readPGMImage(struct pgm *pio, char *filename){
 
