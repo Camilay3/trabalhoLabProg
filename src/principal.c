@@ -50,12 +50,7 @@ int main(int argc, char **argv)
     fclose(f);
 
     unsigned char *pData = malloc(colunas * linhas * sizeof(unsigned char));
-    unsigned char **mat = malloc(linhas * sizeof(unsigned char *));
-    for (int i = 0; i < linhas; i++)
-    {
-        *(mat + i) = pData + (i * colunas);
-    }
-    reconstruirImagem(mapa, mat, 0, 0, colunas);
+    reconstruirImagem(mapa, pData, 0, 0, colunas,colunas);
     salvarPGM(saidaPGM, pData, colunas, linhas, valor_max);
     printf("Imagem reconstruída salva em %s\n", saidaPGM);
     for (int i = 0; i < img.r; i++)
@@ -63,7 +58,6 @@ int main(int argc, char **argv)
         free(matriz[i]);
     }
     free(matriz);
-    free(mat);
     free(pData);
     freeTree(arvore);
     freeTree(mapa);
