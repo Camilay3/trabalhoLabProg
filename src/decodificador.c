@@ -12,13 +12,9 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "include/pgm.h"
-#include "include/decodificador.h"
-typedef struct quadtree {
-    int raiz;                        
-    unsigned char valor;             
-    struct quadtree *no, *ne, *so, *se;
-} quadtree;
+#include "../include/struct.h"
+#include "../include/pgm.h"
+#include "../include/decodificador.h"
 quadtree* reconstruirArvore(FILE *bitstream)
 {
     int tipo = fgetc(bitstream);
@@ -28,7 +24,7 @@ quadtree* reconstruirArvore(FILE *bitstream)
     }
 
     quadtree *n = malloc(sizeof(quadtree));
-    if (!n) {
+    if (n==NULL) {
         perror("malloc");
         return NULL;
     }
@@ -62,29 +58,29 @@ quadtree* reconstruirArvore(FILE *bitstream)
         return NULL;
     }
 }
-void colorirBloco(unsigned char **img,int x, int y, int tam,unsigned char valor){
+void colorirBloco(unsigned char *img,int x, int y, int tam,unsigned char valor,int colunas){
     for (int i = 0; i < tam; i++){
         for (int j = 0; j < tam; j++){
-            img[x + i][y + j] = valor;
+            *(img + (x + i) * colunas + (y + j)) = valor;
         }
     }
 
 }
-void reconstruirImagem(quadtree *q,unsigned char **img, int x, int y, int tamanho)
+void reconstruirImagem(quadtree *q,unsigned char *img, int x, int y, int tamanho,int colunas)
 {
     if (q == NULL){ 
         return;
     }
     if (q->raiz == 0) {
-        colorirBloco(img, x, y, tamanho, q->valor);
+        colorirBloco(img, x, y, tamanho, q->valor,colunas);
         return;
     }
     int h = tamanho / 2;
     if(q -> raiz ==1){ 
-        reconstruirImagem(q->no, img, x,     y,     h);
-        reconstruirImagem(q->ne, img, x,     y + h, h);
-        reconstruirImagem(q->so, img, x + h, y,     h); 
-        reconstruirImagem(q->se, img, x + h, y + h, h);
+        reconstruirImagem(q->no, img, x,     y,     h,colunas);
+        reconstruirImagem(q->ne, img, x,     y + h, h,colunas);
+        reconstruirImagem(q->so, img, x + h, y,     h,colunas); 
+        reconstruirImagem(q->se, img, x + h, y + h, h,colunas);
     }
 }
 int salvarPGM(const char *nome,unsigned char *pData,int colunas, int linhas,int valor_max){

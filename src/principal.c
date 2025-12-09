@@ -1,6 +1,6 @@
-#include "codificador.h"
-#include "pgm.h"
-#include "decodificador.h"
+#include "../include/codificador.h"
+#include "../include/pgm.h"
+#include "../include/decodificador.h"
 #include <stdio.h>
 #include <stdlib.h>
 int main(int argc, char **argv)
@@ -15,14 +15,13 @@ int main(int argc, char **argv)
     
     struct pgm img;
     readPGMImage(&img, (char *)inputPGM);
-
     int colunas = img.c;
     int linhas = img.r;
     int valor_max = img.mv;
 
     unsigned char **matriz = converter_para_matriz(img);
 
-    printf("Construindo quadtree (musiquinha de elevador)(limite = %.2f)...\n", LIMITE);
+    printf("Construindo quadtree (musiquinha de elevador)(limite = %d)...\n", LIMITE);
     quadtree *arvore = construtortree(matriz, 0, 0, img.r, LIMITE);
 
     FILE *fp = fopen(bitstream, "wb");
@@ -36,34 +35,27 @@ int main(int argc, char **argv)
 
     printf("Bitstream salvo com sucesso em %s!\n", bitstream);
 
-    
-    
     FILE *f = fopen(bitstream, "rb");
-    if (!f)
-    {
+    if (f==NULL){
         perror("Erro ao abrir bitstream");
-        return 1;
-        }
-        quadtree *mapa = reconstruirArvore(f);
-        fclose(f);
+        exit(1);
+    }
+    quadtree *mapa = reconstruirArvore(f);
+    fclose(f);
         
-        unsigned char *pData = malloc(colunas * linhas * sizeof(unsigned char));
-        unsigned char **mat = malloc(linhas * sizeof(unsigned char *));
-        for (int i = 0; i < linhas; i++)
-        {
-            *(mat + i) = pData + (i * colunas);
-        }
-        reconstruirImagem(mapa, mat, 0, 0, colunas);
-        salvarPGM(saidaPGM, pData, colunas, linhas, valor_max);
-        printf("Imagem reconstruída salva em %s\n", saidaPGM);
-        for (int i = 0; i < img.r; i++){ 
-            free(matriz[i]);
-        }
-        free(matriz);
-        free(mat);
-        free(pData);
-        freeTree(arvore);
-        freeTree(mapa);
-        free(img.pData);
-        return 0;
+    unsigned char *pData = malloc(colunas * linhas * sizeof(unsigned char));
+    
+    reconstruirImagem(mapa, pData, 0, 0, colunas,colunas);
+    salvarPGM(saidaPGM, pData, colunas, linhas, valor_max);
+    printf("Imagem reconstruída salva em %s\n", saidaPGM);
+
+    for (int i = 0; i < img.r; i++){ 
+        free(matriz[i]);
+    }
+    free(matriz);
+    free(pData);
+    freeTree(arvore);
+    freeTree(mapa);
+    free(img.pData);
+    return 0;
     }
