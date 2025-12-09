@@ -21,6 +21,7 @@ FILE *out = NULL;
 unsigned char buffer = 0;
 int buffer_pos = 0;
 
+
 // Escreve 1 bit
 void escrevebit(int bit) {
     buffer = (buffer << 1) | (bit & 1);
@@ -57,7 +58,8 @@ int lerbit(FILE *in) {
 
     if (rbuffer_pos == 0) {
         int c = fgetc(in);
-        if (c == EOF) return -1; // sinaliza fim de arquivo
+        if (c == EOF)
+            return -1; // sinaliza fim de arquivo
         rbuffer = (unsigned char)c;
         rbuffer_pos = 8;
     }
@@ -81,7 +83,9 @@ unsigned char lerbyte(FILE *in) {
     return b;
 }
 
-unsigned char **converterParaMatriz(struct pgm img) {
+
+unsigned char **converterParaMatriz(struct pgm img)
+{
     unsigned char **matriz = malloc(img.r * sizeof(unsigned char *));
     if (!matriz){
         perror("Erro alocar memória da matriz");
@@ -89,7 +93,9 @@ unsigned char **converterParaMatriz(struct pgm img) {
     }
 
     for (int i = 0; i < img.r; i++) {
-        if (!(matriz[i] = malloc(img.c * sizeof(unsigned char)))) {
+        matriz[i] = malloc(img.c * sizeof(unsigned char));
+        if (!matriz[i])
+        {
             perror("Erro alocar memória da matriz(linha)");
             exit(2);
         }
@@ -109,8 +115,10 @@ double mediaSimples(unsigned char **img, int x, int y, int tamanho) {
 
 double mse(unsigned char **img, int x, int y, int tamanho, double media) {
     double erro = 0;
-    for (int i = 0; i < tamanho; i++) {
-        for (int j = 0; j < tamanho; j++) {
+    for (int i = 0; i < tamanho; i++)
+    {
+        for (int j = 0; j < tamanho; j++)
+        {
             double dif = img[x + i][y + j] - media;
             erro += dif * dif;
         }
@@ -128,7 +136,8 @@ quadtree *construtorTree(unsigned char **img, int x, int y, int tamanho, double 
     double media = mediaSimples(img, x, y, tamanho);
     double erro = mse(img, x, y, tamanho, media);
 
-    if (erro <= limite || tamanho) {
+    if (erro <= limite || tamanho == 1)
+    {
         node->raiz = 0;
         node->valor = (unsigned char)(media + 0.5);
         node->no = node->ne = node->so = node->se = NULL;
@@ -146,10 +155,12 @@ quadtree *construtorTree(unsigned char **img, int x, int y, int tamanho, double 
     return node;
 }
 // Salvar árvore em bitstream
-void salvarArvore(quadtree *n) {
-    if (!n) return;
+void salvarArvore(quadtree *n)
+{
+    if (!n)
+        return;
 
-    if (!(n->raiz)){
+    if (n->raiz == 0){
         escrevebit(0);      // folha
         escrevebyte(n->valor); // valor
         return;
@@ -162,8 +173,10 @@ void salvarArvore(quadtree *n) {
     salvarArvore(n->se);
 }
 // Liberar memória da árvore
-void freeTree(quadtree *n) {
-    if (!n) return;
+void freeTree(quadtree *n)
+{
+    if (!n)
+        return;
     freeTree(n->no);
     freeTree(n->ne);
     freeTree(n->so);
