@@ -15,6 +15,7 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 #include "../include/struct.h"
 #include "../include/pgm.h"
 #include "../include/decodificador.h"
+void colorirBloco(unsigned char *,int , int , int ,unsigned char ,int );
 quadtree* reconstruirArvore(FILE *bitstream)
 {
     int tipo = fgetc(bitstream);
@@ -58,14 +59,7 @@ quadtree* reconstruirArvore(FILE *bitstream)
         return NULL;
     }
 }
-void colorirBloco(unsigned char *img,int x, int y, int tam,unsigned char valor,int colunas){
-    for (int i = 0; i < tam; i++){
-        for (int j = 0; j < tam; j++){
-            *(img + (x + i) * colunas + (y + j)) = valor;
-        }
-    }
 
-}
 void reconstruirImagem(quadtree *q,unsigned char *img, int x, int y, int tamanho,int colunas)
 {
     if (q == NULL){ 
@@ -83,6 +77,16 @@ void reconstruirImagem(quadtree *q,unsigned char *img, int x, int y, int tamanho
         reconstruirImagem(q->se, img, x + h, y + h, h,colunas);
     }
 }
+
+void colorirBloco(unsigned char *img,int x, int y, int tam,unsigned char valor,int colunas){
+    for (int i = 0; i < tam; i++){
+        for (int j = 0; j < tam; j++){
+            *(img + (x + i) * colunas + (y + j)) = valor;
+        }
+    }
+
+}
+
 int salvarPGM(const char *nome,unsigned char *pData,int colunas, int linhas,int valor_max){
     FILE *fp = fopen(nome, "wb");
     if (fp == NULL) {
