@@ -16,29 +16,27 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 #include "../include/pgm.h"
 #include "../include/decodificador.h"
 #include "../include/codificador.h"
+
 void colorirBloco(unsigned char *img,int x, int y, int tam,unsigned char valor,int colunas);
-quadtree *reconstruirArvore(FILE *bitstream){
+quadtree *reconstruirArvore(FILE *bitstream) {
     int tipo = lerbit(bitstream);
-    if (tipo == -1)
-    {
+    if (tipo == -1) {
         fprintf(stderr, "Erro: fim inesperado no bitstream.\n");
         return NULL;
     }
 
     quadtree *n = malloc(sizeof(quadtree));
-    if (n == NULL){
+    if (n == NULL) {
         perror("Erro ao alocar memória");
         return NULL;
     }
 
     n->no = n->ne = n->so = n->se = NULL;
 
-    if (tipo == 0 ){
-
+    if (!tipo){
         n->raiz = 0;
         int v = lerbyte(bitstream);
-        if (v == EOF)
-        {
+        if (v == EOF) {
             fprintf(stderr, "Erro: valor de folha ausente.\n");
             free(n);
             return NULL;
@@ -46,31 +44,27 @@ quadtree *reconstruirArvore(FILE *bitstream){
         n->valor = (unsigned char)v;
         return n;
     }
-    else if (tipo == 1 ){
-
+    else if (tipo){
         n->raiz = 1;
         n->no = reconstruirArvore(bitstream);
         n->ne = reconstruirArvore(bitstream);
         n->so = reconstruirArvore(bitstream);
         n->se = reconstruirArvore(bitstream);
         return n;
-    }
-    else{
+    } else{
         fprintf(stderr, "Erro: byte inválido na árvore: %d\n", tipo);
         free(n);
         return NULL;
     }
 }
-void reconstruirImagem(quadtree *q,unsigned char *img, int x, int y, int tamanho,int colunas){
-    if (q == NULL){ 
-        return;
-    }
-    if (q->raiz == 0) {
+void reconstruirImagem(quadtree *q,unsigned char *img, int x, int y, int tamanho,int colunas) {
+    if (q == NULL) return;
+    if (!(q->raiz)) {
         colorirBloco(img, x, y, tamanho, q->valor,colunas);
         return;
     }
     int h = tamanho / 2;
-    if(q->raiz ==1){ 
+    if(q->raiz){ 
         reconstruirImagem(q->no, img, x,     y,     h,colunas);
         reconstruirImagem(q->ne, img, x,     y + h, h,colunas);
         reconstruirImagem(q->so, img, x + h, y,     h,colunas); 
@@ -84,7 +78,6 @@ void colorirBloco(unsigned char *img,int x, int y, int tam,unsigned char valor,i
             *(img + (x + i) * colunas + (y + j)) = valor;
         }
     }
-
 }
 
 int salvarPGM(const char *nome,unsigned char *pData,int colunas, int linhas,int valor_max){

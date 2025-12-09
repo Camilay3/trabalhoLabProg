@@ -1,15 +1,3 @@
-/**************************************************************************
-Alunos: 
-	- Camila Azevedo
-	- Mariana Silva
-	- Andrey Pereira
-	- Mateus Pinheiro
-
-Avaliacao 04: Trabalho Final
-04.505.23 − 2025.2 − Prof. Daniel Ferreira
-Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
-***************************************************************************************/
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -25,31 +13,31 @@ void readPGMImage(struct pgm *, char *);
 void viewPGMImage(struct pgm *);
 void writePGMImage(struct pgm *, char *);
 
-// int main(int argc, char *argv[]){
-// 	struct pgm img;
+/* int main(int argc, char *argv[]){
+	struct pgm img;
 
-// 	if (argc!=3){
-// 		printf("Formato: \n\t %s <imagemEntrada.pgm> <imagemSaida.pgm>\n",argv[0]);
-// 		exit(1);
-// 	}
+	if (argc!=3){
+		printf("Formato: \n\t %s <imagemEntrada.pgm> <imagemSaida.pgm>\n",argv[0]);
+		exit(1);
+	}
 
-// 	readPGMImage(&img,argv[1]);
-// 	writePGMImage(&img, argv[2]);
-// 	viewPGMImage(&img);
+	readPGMImage(&img,argv[1]);
+	writePGMImage(&img, argv[2]);
+	viewPGMImage(&img);
 
-// 	return 0;
-// }
+	return 0;
+} */
 
 void readPGMImage(struct pgm *pio, char *filename){
 	FILE *fp;
 	char ch;
 
-	if (!(fp = fopen(filename,"r"))){
-		perror("Erro.");
+	if (!(fp = fopen(filename,"r"))) {
+		perror("Erro ao abrir o arquivo");
 		exit(1);
 	}
 
-	if ( (ch = getc(fp))!='P'){
+	if ((ch = getc(fp)) != 'P'){
 		puts("A imagem fornecida não está no formato pgm");
 		exit(2);
 	}
@@ -58,7 +46,7 @@ void readPGMImage(struct pgm *pio, char *filename){
 	fseek(fp,1, SEEK_CUR);
 
 	while((ch=getc(fp))=='#'){
-		while( (ch=getc(fp))!='\n');
+		while((ch=getc(fp))!='\n');
 	}
 
 	fseek(fp,-1, SEEK_CUR);
@@ -87,7 +75,7 @@ void readPGMImage(struct pgm *pio, char *filename){
 		default:
 			puts("Não está implementado");
 	}
-	
+
 	fclose(fp);
 }
 
@@ -96,8 +84,8 @@ void writePGMImage(struct pgm *pio, char *filename){
 	char ch;
 
 	if (!(fp = fopen(filename,"wb"))){
-		perror("Erro.");
-		exit(1);
+		perror("Erro ao abrir o arquivo");
+		exit(3);
 	}
 
 	fprintf(fp, "%s\n","P5");
@@ -115,8 +103,8 @@ void viewPGMImage(struct pgm *pio){
 	printf("Max: %d\n",pio->mv);
 
 	for (int k=0; k < (pio->r * pio->c); k++){
-		if (!( k % pio->c)) printf("\n");
+		if (!(k % pio->c)) printf("\n");
 		printf("%2hhu ",*(pio->pData+k));
-	}	
+	}
 	printf("\n");
 }
