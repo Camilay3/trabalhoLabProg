@@ -1,14 +1,26 @@
 /**************************************************************************
-Alunos:
-    - Camila Azevedo
-    - Mariana Silva
-    - Andrey Pereira
-    - Mateus Pinheiro
+Avaliação 04: Trabalho Final | 04.505.23 − 2025.2 − Prof. Daniel Ferreira
+___________________________________________________________________________
 
-Avaliacao 04: Trabalho Final
-04.505.23 − 2025.2 − Prof. Daniel Ferreira
+Aluno: Andrey Pereira
+Matrícula: 20251045050038
+Compilador: gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+___________________________________________________________________________
+ 
+Aluno: Camila Azevedo
+Matrícula: 20251045050089
 Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
-***************************************************************************************/
+___________________________________________________________________________
+
+Aluno: Mariana Silva
+Matrícula: 20251045050321
+Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+___________________________________________________________________________
+
+Aluno: Mateus Pinheiro
+Matrícula: 20251045050348
+Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+***************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,8 +28,8 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 #include "../include/pgm.h"
 #include "../include/decodificador.h"
 #include "../include/codificador.h"
+#include "../include/manipuladorDeBits.h"
 
-void colorirBloco(unsigned char *img,int x, int y, int tam,unsigned char valor,int colunas);
 quadtree *reconstruirArvore(FILE *bitstream){
     int tipo = lerbit(bitstream);
     if (tipo == -1) {

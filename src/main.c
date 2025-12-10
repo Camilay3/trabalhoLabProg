@@ -1,12 +1,37 @@
+/**************************************************************************
+Avaliação 04: Trabalho Final | 04.505.23 − 2025.2 − Prof. Daniel Ferreira
+___________________________________________________________________________
+
+Aluno: Andrey Pereira
+Matrícula: 20251045050038
+Compilador: gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+___________________________________________________________________________
+ 
+Aluno: Camila Azevedo
+Matrícula: 20251045050089
+Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+___________________________________________________________________________
+
+Aluno: Mariana Silva
+Matrícula: 20251045050321
+Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+___________________________________________________________________________
+
+Aluno: Mateus Pinheiro
+Matrícula: 20251045050348
+Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+***************************************************************************/
+
 #include "../include/codificador.h"
 #include "../include/pgm.h"
 #include "../include/decodificador.h"
+#include "../include/manipuladorDeBits.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char **argv) {
     if (argc != 4) {
-        printf("uso:<%s> <entrada.pgm> <bitstream.bin> <saida.pgm>", argv[0]);
+        printf("\nUso:<%s> <entrada.pgm> <bitstream.bin> <saida.pgm>\n", argv[0]);
         exit(1);
     }
     const char *inputPGM = argv[1];

@@ -22,22 +22,19 @@ Matrícula: 20251045050348
 Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 ***************************************************************************/
 
-#ifndef CODIFICADOR_H
-#define CODIFICADOR_H
+#ifndef MANIPULADOR_H
+#define MANIPULADOR_H
 
 #include <stdio.h>
-#define LIMITE 21.205
-#include "struct.h"
 
-struct pgm;
-void readPGMImage(struct pgm *pio, char *filename);
-void writePGMImage(struct pgm *pio, char *filename);
+extern FILE *out;
+extern unsigned char buffer;
+extern int buffer_pos;
 
-unsigned char **converterParaMatriz(struct pgm img);
-double mediaSimples(unsigned char **img, int x, int y, int tamanho);
-double mse(unsigned char **img, int x, int y, int tamanho, double media);
-quadtree *construtorTree(unsigned char **img, int x, int y,int tamanho, double limite);
-void salvarArvore(quadtree *n);
-void freeTree(quadtree *n);
+void escrevebit(int bit);
+void escrevebyte(unsigned char b);
+void checagembits(void);
+int lerbit(FILE *in);
+unsigned char lerbyte(FILE *in);
 
 #endif
