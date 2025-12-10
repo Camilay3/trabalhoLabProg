@@ -1,3 +1,15 @@
+/**************************************************************************
+Alunos: 
+	- Camila Azevedo
+	- Mariana Silva
+	- Andrey Pereira
+	- Mateus Pinheiro
+
+Avaliacao 04: Trabalho Final
+04.505.23 − 2025.2 − Prof. Daniel Ferreira
+Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+***************************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/manipuladorDeBits.h"
