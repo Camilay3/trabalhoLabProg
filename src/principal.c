@@ -46,6 +46,8 @@ int main(int argc, char **argv)
         perror("Erro ao abrir bitstream");
         return 1;
     }
+    buffer = 0;
+    buffer_pos = 0;
     quadtree *mapa = reconstruirArvore(f);
     fclose(f);
 

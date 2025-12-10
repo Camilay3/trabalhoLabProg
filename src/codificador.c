@@ -128,36 +128,106 @@ double mse(unsigned char **img, int x, int y, int tamanho, double media)
     }
     return erro / (tamanho * tamanho);
 }
-quadtree *construtortree(unsigned char **img, int x, int y, int tamanho, double limite)
-{
-    quadtree *node = malloc(sizeof(quadtree));
-    if (!node)
-    {
-        perror("malloc quadtree");
-        exit(1);
+
+double gradiente(unsigned char **img, int x, int y, int tamanho) {
+    double soma = 0.0;
+    int count = 0;
+
+    for (int i = 0; i < tamanho - 1; i++) {
+        for (int j = 0; j < tamanho - 1; j++) {
+
+            double a = img[x + i][y + j];
+            double dx = abs(a - img[x + i][y + j + 1]);
+            double dy = abs(a - img[x + i + 1][y + j]);
+
+            soma += dx + dy;
+            count++;
+        }
     }
 
-    double media = media_simples(img, x, y, tamanho);
-    double erro = mse(img, x, y, tamanho, media);
+    return soma / count;
+}
 
-    if (erro <= limite || tamanho == 1)
-    {
-        node->raiz = 0;
+quadtree *construtortree(unsigned char **img, int x, int y, int tamanho, double limiteMSE) {
+
+    quadtree *node = malloc(sizeof(quadtree));
+    if (!node) { perror("malloc"); exit(1); }
+
+    // --- 1. TAMANHO MÍNIMO ---
+    if (tamanho <= 2) {
+        double media = media_simples(img, x, y, tamanho);
+
+        node->raiz  = 0;
         node->valor = (unsigned char)(media + 0.5);
+
         node->no = node->ne = node->so = node->se = NULL;
         return node;
     }
 
+    // --- 2. MÉDIA ---
+    double media = media_simples(img, x, y, tamanho);
+
+    // --- 3. ERRO (MSE) ---
+    double erro = mse(img, x, y, tamanho, media);
+
+    // --- 4. GRADIENTE ---
+    double grad = gradiente(img, x, y, tamanho);
+
+    // --- Thresholds ---
+    double T1_MSE  = limiteMSE;
+    double T2_GRAD = 20.0;
+
+    // --- 5. CRITÉRIO HÍBRIDO ---
+    if (erro < T1_MSE && grad < T2_GRAD) {
+        node->raiz  = 0;
+        node->valor = (unsigned char)(media + 0.5);
+
+        node->no = node->ne = node->so = node->se = NULL;
+        return node;
+    }
+
+    // --- 6. DIVISÃO EM QUATRO ---
     node->raiz = 1;
     int h = tamanho / 2;
 
-    node->no = construtortree(img, x, y, h, limite);
-    node->ne = construtortree(img, x, y + h, h, limite);
-    node->so = construtortree(img, x + h, y, h, limite);
-    node->se = construtortree(img, x + h, y + h, h, limite);
+    node->no = construtortree(img, x,      y,      h, limiteMSE);
+    node->ne = construtortree(img, x,      y + h,  h, limiteMSE);
+    node->so = construtortree(img, x + h,  y,      h, limiteMSE);
+    node->se = construtortree(img, x + h,  y + h,  h, limiteMSE);
 
     return node;
 }
+
+// quadtree *construtortree(unsigned char **img, int x, int y, int tamanho, double limite)
+// {
+//     quadtree *node = malloc(sizeof(quadtree));
+//     if (!node)
+//     {
+//         perror("malloc quadtree");
+//         exit(1);
+//     }
+
+//     double media = media_simples(img, x, y, tamanho);
+//     double erro = mse(img, x, y, tamanho, media);
+
+//     if (erro <= limite || tamanho == 1)
+//     {
+//         node->raiz = 0;
+//         node->valor = (unsigned char)(media + 0.5);
+//         node->no = node->ne = node->so = node->se = NULL;
+//         return node;
+//     }
+
+//     node->raiz = 1;
+//     int h = tamanho / 2;
+
+//     node->no = construtortree(img, x, y, h, limite);
+//     node->ne = construtortree(img, x, y + h, h, limite);
+//     node->so = construtortree(img, x + h, y, h, limite);
+//     node->se = construtortree(img, x + h, y + h, h, limite);
+
+//     return node;
+// }
 // Salvar árvore em bitstream
 void salvarArvore(quadtree *n)
 {

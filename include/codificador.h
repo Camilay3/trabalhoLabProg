@@ -2,7 +2,8 @@
 #define CODIFICADOR_H
 
 #include <stdio.h>
-#define LIMITE 21.205
+#include <math.h>
+#define LIMITE 10.0
 #include "struct.h"
 
 extern FILE *out;
@@ -23,7 +24,8 @@ unsigned char lerbyte(FILE *in);
 unsigned char **converter_para_matriz(struct pgm img);
 double media_simples(unsigned char **img, int x, int y, int tamanho);
 double mse(unsigned char **img, int x, int y, int tamanho, double media);
-quadtree *construtortree(unsigned char **img, int x, int y,int tamanho, double limite);
+double gradiente(unsigned char **img, int x, int y, int tamanho);
+quadtree *construtortree(unsigned char **img, int x, int y,int tamanho, double limiteMSE);
 void salvarArvore(quadtree *n);
 void freeTree(quadtree *n);
 
