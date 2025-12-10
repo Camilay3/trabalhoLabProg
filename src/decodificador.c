@@ -16,6 +16,7 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 #include "../include/pgm.h"
 #include "../include/decodificador.h"
 #include "../include/codificador.h"
+#include "../include/manipuladorDeBits.h"
 
 void colorirBloco(unsigned char *img,int x, int y, int tam,unsigned char valor,int colunas);
 quadtree *reconstruirArvore(FILE *bitstream){

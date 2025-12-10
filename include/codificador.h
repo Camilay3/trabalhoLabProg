@@ -17,20 +17,9 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 #define LIMITE 21.205
 #include "struct.h"
 
-extern FILE *out;
-extern unsigned char buffer;
-extern int buffer_pos;
-
 struct pgm;
 void readPGMImage(struct pgm *pio, char *filename);
 void writePGMImage(struct pgm *pio, char *filename);
-
-void escrevebit(int bit);
-void escrevebyte(unsigned char b);
-void checagembits(void);
-
-int lerbit(FILE *in);
-unsigned char lerbyte(FILE *in);
 
 unsigned char **converterParaMatriz(struct pgm img);
 double mediaSimples(unsigned char **img, int x, int y, int tamanho);

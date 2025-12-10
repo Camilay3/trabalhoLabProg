@@ -1,12 +1,13 @@
 #include "../include/codificador.h"
 #include "../include/pgm.h"
 #include "../include/decodificador.h"
+#include "../include/manipuladorDeBits.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char **argv) {
     if (argc != 4) {
-        printf("uso:<%s> <entrada.pgm> <bitstream.bin> <saida.pgm>", argv[0]);
+        printf("\nUso:<%s> <entrada.pgm> <bitstream.bin> <saida.pgm>\n", argv[0]);
         exit(1);
     }
     const char *inputPGM = argv[1];
