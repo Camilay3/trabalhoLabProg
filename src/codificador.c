@@ -137,8 +137,8 @@ double gradiente(unsigned char **img, int x, int y, int tamanho) {
         for (int j = 0; j < tamanho - 1; j++) {
 
             double a = img[x + i][y + j];
-            double dx = abs(a - img[x + i][y + j + 1]);
-            double dy = abs(a - img[x + i + 1][y + j]);
+            double dx = fabs(a - img[x + i][y + j + 1]);
+            double dy = fabs(a - img[x + i + 1][y + j]);
 
             soma += dx + dy;
             count++;
@@ -154,11 +154,11 @@ quadtree *construtortree(unsigned char **img, int x, int y, int tamanho, double 
     if (!node) { perror("malloc"); exit(1); }
 
     // --- 1. TAMANHO MÍNIMO ---
-    if (tamanho <= 2) {
+    if (tamanho <= 1) {
         double media = media_simples(img, x, y, tamanho);
 
         node->raiz  = 0;
-        node->valor = (unsigned char)(media + 0.5);
+        node->valor = (unsigned char)round(media);
 
         node->no = node->ne = node->so = node->se = NULL;
         return node;
@@ -175,7 +175,7 @@ quadtree *construtortree(unsigned char **img, int x, int y, int tamanho, double 
 
     // --- Thresholds ---
     double T1_MSE  = limiteMSE;
-    double T2_GRAD = 20.0;
+    double T2_GRAD = 10.0;
 
     // --- 5. CRITÉRIO HÍBRIDO ---
     if (erro < T1_MSE && grad < T2_GRAD) {
