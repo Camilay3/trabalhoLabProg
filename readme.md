@@ -72,7 +72,10 @@
 - Compatibilidade com dataset de teste: O código realiza seu processo de compressão de imagens de maneira sastifatória com todos os arquivos do formato de imagem `.pgm` presentes no data set e no material disponibilizado pelo professor.
 
 ## 4. Compilação
-Texto aqui...
+**A compilação do projeto é feita de maneira sucinta e direta, exigindo apenas a utilização der 2 comandos:**
+- *Passo 1:* Digite o comando "`make`" no terminal ( Esse comando é a ferramenta que executa ações baseadas em regras e dependências definidas no Makefile).
+- *Passo 2:* Digite o comando "`./TrabalhoLabProg dataset/img01.pgm bitstream.bin reconstruida01.pgm`" ( Esse comando irá gerar a imagem que foi comprimida após sua reconstrução).
+- *Passo 3:* Digite o comando "make clean" (Esse comando irá limpar os arquivos `.o` gerados pelo `make` e permitirá que o comando make seja executado novamente).
 
 ## 5. Tecnologias
 *O projeto foi desenvolvido utilizando as seguintes tecnologias:*
