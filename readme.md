@@ -15,23 +15,23 @@
 
  ## 📑 Índice
 
-- [📌 Sobre o Projeto]
-- [📂 Estrutura do Repositório]
-- [🧩 Funcionalidades]
-- [🚀 Compilação]
-- [▶️ Execução]
-- [🛠️ Tecnologias]
-- [👩‍💻 Autoria]
+  1. Sobre o Projeto
+  2. Estrutura do Projeto
+  3. Funcionalidades
+  4. Compilação
+  5. Execução
+  6. Tecnologias
+  7. Autoria
 
 ---
 
-## 📌 Sobre o Projeto
+## 1. Sobre o Projeto
  O projeto a seguir consiste na compressão, manipulação e processamento de imagens no formato PGM (Portable GrayMap). Esse formato de imagem é considerado um raster, ou seja, é baseado em pixels, e permite o armazenamento de imagens em escala de cinza, de preto a branco. Ele foi implementado em um ambiente de trabalho acadêmico utilizando exclusivamente a Linguagem C de Programação para que fosse aperfeiçoado o uso dessa linguagem pelos alunos de maneira prática, afim de que os dicentes de Laboratório de Programação do IFCE pudessem compreender de maneira completa como é a transição de problemas realistas de alto nível para a codificação em baixo nível, tornando assim a condensação conteúdo mais direcionada para o uso da programação em um contexto de soluções reais.
 
-## 📂 Estrutura do Projeto
+## 2. Estrutura do Projeto
 
 ### Diretório `dataset/`
-*Contém as imagens de teste no formato `.pgm`:*
+*Imagens de teste no formato `.pgm`:*
 - img01.pgm  
 - img02.pgm  
 - img03.pgm  
@@ -48,27 +48,27 @@
 - manipuladorDeBits.h 
 
 ### Diretório `src/`
-*Implementação em C:*
+*Arquivos em C:*
 - codificador.c  
 - decodificador.c  
 - pgm.c  
 - struct.c  
 - manipuladorDeBits.c 
-- main.c **ou** principal.c  
+- main.c ou principal.c  
 
-## 🧩 Funcionalidades
+## 3. Funcionalidades
 Texto aqui...
 
-## 🚀 Compilação
+## 4. Compilação
 Texto aqui...
 
-## ▶️ Execução
+## 5. Execução
 Texto aqui...
 
-## 🛠️ Tecnologias
+## 6. Tecnologias
 Texto aqui...
 
-## 👩‍💻 Autoria
+## 7. Autoria
  **Alunos do Instituto Federal de Educação Ciência e Tecnologia do Ceará - Campus Maracanaú**
 - Mariana Holanda  
 - Camila Santiago  
