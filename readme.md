@@ -8,7 +8,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Linguagem-C-blue?style=for-the-badge">
   <img src="https://img.shields.io/badge/Status-Desenvolvimento_Completo-yellow?style=for-the-badge">
-  <img src="https://img.shields.io/badge/Ambiente_Acdêmico-IFCE-success?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Ambiente_Acadêmico-IFCE-success?style=for-the-badge">
 </p>
 
 ---
