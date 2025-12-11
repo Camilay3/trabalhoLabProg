@@ -16,14 +16,16 @@ all: $(TARGET)
 
 $(TARGET): $(MODULOS) $(MAIN:.c=.o)
 	$(CC) $(CFLAGS) $^ -I$(INC) -o $@
-	./$(TARGET)"
+	@echo " -- Resultado gerado: ./$(TARGET)"
 
 %.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $< -I$(INC) -o $@
 
 run: all
 	./$(TARGET)
-
-
+ 
 clean:
-	rm -f *.o $(TARGET)
+clean:
+	rm -f $(TARGET) *.o $(SRC)/*.o
+	@echo " -- Limpeza concluída"
+
