@@ -79,8 +79,14 @@ Texto aqui...
 Texto aqui...
 
 ## 6. Tecnologias
-Texto aqui...
-
+*O projeto foi desenvolvido utilizando as seguintes tecnologias:*
+- Linguagem de programação: C
+- Compilador: GCC (GNU Compiler Collection)
+- Arquivo de configuração : Makefile (executado pela ferramenta make)
+- Arquivos de imagem: Formato PGM (Portable Gray Map)
+- Versionamento: Git/GitHub
+- Editor de código: VS Code
+  
 ## 7. Autoria
  **Alunos do Instituto Federal de Educação Ciência e Tecnologia do Ceará - Campus Maracanaú**
 - Mariana Holanda  
