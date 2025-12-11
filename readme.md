@@ -19,9 +19,8 @@
   2. Estrutura do Projeto
   3. Funcionalidades
   4. Compilação
-  5. Execução
-  6. Tecnologias
-  7. Autoria
+  5. Tecnologias
+  6. Autoria
 
 ---
 
@@ -75,10 +74,7 @@
 ## 4. Compilação
 Texto aqui...
 
-## 5. Execução
-Texto aqui...
-
-## 6. Tecnologias
+## 5. Tecnologias
 *O projeto foi desenvolvido utilizando as seguintes tecnologias:*
 - Linguagem de programação: C
 - Compilador: GCC (GNU Compiler Collection)
@@ -87,7 +83,7 @@ Texto aqui...
 - Versionamento: Git/GitHub
 - Editor de código: VS Code
   
-## 7. Autoria
+## 6. Autoria
  **Alunos do Instituto Federal de Educação Ciência e Tecnologia do Ceará - Campus Maracanaú**
 - Mariana Holanda  
 - Camila Santiago  
