@@ -27,4 +27,3 @@ run: all
 clean:
 	rm -f $(TARGET) *.o $(SRC)/*.o
 	@echo " -- Limpeza concluída"
-

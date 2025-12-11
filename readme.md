@@ -57,7 +57,20 @@
 - main.c ou principal.c  
 
 ## 3. Funcionalidades
-Texto aqui...
+*As funcionalidades do projeto incluem desde a entrada da imagem do arquivo em pgm, seu processamento e sua compressão até a sua decodifiação para ser reconstruída de maneira comprimida e ser gerada para visualização. A seguir, segue de maneira listada cada uma dessas funcionalidades:*
+- Leitura de imagens PGM: É capaz de processar arquivos de imagens no formato `.pgm` para processamento.
+
+- Codificação de imagens: Aplica técnicas de compressão e codificação para reduzir o tamanho das imagens através de variados artifícios da `Linguagem C` de Programação.
+
+- Decodificação de imagens: Reconstrói imagens a partir de dados codificados, garantindo que não ocorra alterações no conteúdo original.
+
+- Manipulação de bits: Permite operações de leitura e escrita de bits para codificação eficiente.
+
+- Gerenciamento de dados estruturados: Utiliza estruturas de dados para organizar informações das imagens e da codificação.
+
+- Execução modular: Código organizado em módulos para facilitar a compreensão de código e realizar possíveis alterações com mais eficiência e agilidade.
+
+- Compatibilidade com dataset de teste: O código realiza seu processo de compressão de imagens de maneira sastifatória com todos os arquivos do formato de imagem `.pgm` presentes no data set e no material disponibilizado pelo professor.
 
 ## 4. Compilação
 Texto aqui...
