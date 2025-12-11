@@ -8,3 +8,9 @@ reconstruida05.pgm
 macacorecontruido.pgm
 reconstruidomacaco.pgm
 trabalho
+TrabalhoLabProg
+codificador.o
+decodificador.o
+manipuladorDeBits.o
+pgm.o
+main.o
