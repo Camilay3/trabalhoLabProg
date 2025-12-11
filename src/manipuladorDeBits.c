@@ -30,7 +30,6 @@ FILE *out = NULL;
 unsigned char buffer = 0;
 int buffer_pos = 0;
 
-// Escreve 1 bit
 void escrevebit(int bit) {
     buffer = (buffer << 1) | (bit & 1);
     buffer_pos++;
@@ -41,7 +40,6 @@ void escrevebit(int bit) {
     }
 }
 
-// Escreve 1 byte
 void escrevebyte(unsigned char b) {
     for(int i =7; i>= 0;i--){
         int bit = (b >> i )& 1;
@@ -49,7 +47,6 @@ void escrevebyte(unsigned char b) {
     }
 }
 
-// Finaliza escrita, grava último byte parcial
 void checagembits() {
     if (buffer_pos > 0) {
         buffer <<= (8 - buffer_pos);
@@ -59,14 +56,13 @@ void checagembits() {
     }
 }
 
-// Lê 1 bit do bitstream
 int lerbit(FILE *in) {
     static unsigned char rbuffer = 0;
     static int rbuffer_pos = 0;
 
     if (rbuffer_pos == 0) {
         int c = fgetc(in);
-        if (c == EOF) return -1; // sinaliza fim de arquivo
+        if (c == EOF) return -1;
         rbuffer = (unsigned char)c;
         rbuffer_pos = 8;
     }
@@ -76,7 +72,6 @@ int lerbit(FILE *in) {
     return bit;
 }
 
-// Lê 1 byte do bitstream
 unsigned char lerbyte(FILE *in) {
     unsigned char b = 0;
     for (int i = 0; i < 8; i++) {

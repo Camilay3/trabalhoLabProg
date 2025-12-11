@@ -47,7 +47,6 @@ unsigned char **converterParaMatriz(struct pgm img) {
     return matriz;
 }
 
-// Funções do codificador (quadtree)
 double mediaSimples(unsigned char **img, int x, int y, int tamanho) {
     int soma = 0;
     for (int i = 0; i < tamanho; i++) {
@@ -94,24 +93,23 @@ quadtree *construtorTree(unsigned char **img, int x, int y, int tamanho, double 
 
     return node;
 }
-// Salvar árvore em bitstream
+
 void salvarArvore(quadtree *n) {
     if (!n) return;
 
     if (n->raiz == 0){
-        escrevebit(0);      // folha
-        escrevebyte(n->valor); // valor
+        escrevebit(0);
+        escrevebyte(n->valor);
         return;
     }
 
-    escrevebit(1); // nó interno
+    escrevebit(1);
     salvarArvore(n->no);
     salvarArvore(n->ne);
     salvarArvore(n->so);
     salvarArvore(n->se);
 }
 
-// Liberar memória da árvore
 void freeTree(quadtree *n) {
     if (!n) return;
     freeTree(n->no);
