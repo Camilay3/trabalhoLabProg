@@ -92,5 +92,5 @@
 - Camila Santiago  
 - Andrey Pereira  
 - Mateus Pinheiro
-*Professor orientador: Daniel Silva*
+- *Professor orientador: Daniel Silva*
 
