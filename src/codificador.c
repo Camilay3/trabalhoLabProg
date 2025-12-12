@@ -140,7 +140,7 @@ quadtree *construtortree(unsigned char **img, int x, int y, int tamanho, double 
     double media = media_simples(img, x, y, tamanho);
     double erro = mse(img, x, y, tamanho, media);
 
-    if (erro <= limite || tamanho == 1)
+    if (erro <= limite || tamanho <= 1)
     {
         node->raiz = 0;
         node->valor = (unsigned char)(media + 0.5);

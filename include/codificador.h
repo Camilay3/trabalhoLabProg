@@ -2,7 +2,7 @@
 #define CODIFICADOR_H
 
 #include <stdio.h>
-#define LIMITE 21.205
+#define LIMITE 28.25
 #include "struct.h"
 
 extern FILE *out;
