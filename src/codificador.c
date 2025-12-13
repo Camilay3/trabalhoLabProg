@@ -47,36 +47,43 @@ unsigned char **converterParaMatriz(struct pgm img) {
     return matriz;
 }
 
-double mediaSimples(unsigned char **img, int x, int y, int tamanho) {
+double mediaSimples(unsigned char **img, int x, int y, int altura, int largura) {
     int soma = 0;
-    for (int i = 0; i < tamanho; i++) {
-        for (int j = 0; j < tamanho; j++) soma += img[x + i][y + j];
+    for (int i = 0; i < altura; i++) {
+        for (int j = 0; j < largura; j++) soma += img[x + i][y + j];
     }
-    return (double)soma / (tamanho * tamanho);
+    return (double)soma / (altura * largura);
 }
 
-double mse(unsigned char **img, int x, int y, int tamanho, double media) {
+double mse(unsigned char **img, int x, int y, int altura, int largura, double media) {
     double erro = 0;
-    for (int i = 0; i < tamanho; i++) {
-        for (int j = 0; j < tamanho; j++) {
+    for (int i = 0; i < altura; i++) {
+        for (int j = 0; j < largura; j++) {
             double dif = img[x + i][y + j] - media;
             erro += dif * dif;
         }
     }
-    return erro / (tamanho * tamanho);
+    return erro / (altura * largura);
 }
 
-quadtree *construtorTree(unsigned char **img, int x, int y, int tamanho, double limite) {
+quadtree *construtorTree(unsigned char **img, int x, int y, int altura, int largura, double limite) {
     quadtree *node = malloc(sizeof(quadtree));
     if (!node) {
         perror("Erro ao alocar memória do quadtree");
         exit(3);
     }
 
-    double media = mediaSimples(img, x, y, tamanho);
-    double erro = mse(img, x, y, tamanho, media);
+    if (altura <= 0 || largura <= 0) {
+        node->raiz = 0;
+        node->valor = 0;
+        node->no = node->ne = node->so = node->se = NULL;
+        return node;
+    }
 
-    if (erro <= limite || tamanho == 1) {
+    double media = mediaSimples(img, x, y, altura, largura);
+    double erro = mse(img, x, y, altura, largura, media);
+
+    if (erro <= limite || (altura == 1 && largura == 1)) {
         node->raiz = 0;
         node->valor = (unsigned char)(media + 0.5);
         node->no = node->ne = node->so = node->se = NULL;
@@ -84,12 +91,13 @@ quadtree *construtorTree(unsigned char **img, int x, int y, int tamanho, double 
     }
 
     node->raiz = 1;
-    int h = tamanho / 2;
-    
-    node->no = construtorTree(img, x, y, h, limite);
-    node->ne = construtorTree(img, x, y + h, h, limite);
-    node->so = construtorTree(img, x + h, y, h, limite);
-    node->se = construtorTree(img, x + h, y + h, h, limite);
+    int ha = altura / 2;
+    int wa = largura / 2;
+
+    node->no = construtorTree(img, x, y, ha, wa, limite);
+    node->ne = construtorTree(img, x, y + wa, ha, largura - wa, limite);
+    node->so = construtorTree(img, x + ha, y, altura - ha, wa, limite);
+    node->se = construtorTree(img, x + ha, y + wa, altura - ha, largura - wa, limite);
 
     return node;
 }

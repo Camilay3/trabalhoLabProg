@@ -34,9 +34,9 @@ void readPGMImage(struct pgm *pio, char *filename);
 void writePGMImage(struct pgm *pio, char *filename);
 
 unsigned char **converterParaMatriz(struct pgm img);
-double mediaSimples(unsigned char **img, int x, int y, int tamanho);
-double mse(unsigned char **img, int x, int y, int tamanho, double media);
-quadtree *construtorTree(unsigned char **img, int x, int y,int tamanho, double limite);
+double mediaSimples(unsigned char **img, int x, int y, int altura, int largura);
+double mse(unsigned char **img, int x, int y, int altura, int largura, double media);
+quadtree *construtorTree(unsigned char **img, int x, int y, int altura, int largura, double limite);
 void salvarArvore(quadtree *n);
 void freeTree(quadtree *n);
 

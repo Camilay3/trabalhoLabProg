@@ -69,24 +69,26 @@ quadtree *reconstruirArvore(FILE *bitstream){
     }
 }
 
-void reconstruirImagem(quadtree *q,unsigned char *img, int x, int y, int tamanho,int colunas){
+void reconstruirImagem(quadtree *q, unsigned char *img, int x, int y, int altura, int largura, int colunas){
     if (q == NULL) return;
+    if (altura <= 0 || largura <= 0) return;
     if (q->raiz == 0) {
-        colorirBloco(img, x, y, tamanho, q->valor,colunas);
+        colorirBloco(img, x, y, altura, largura, q->valor, colunas);
         return;
     }
-    int h = tamanho / 2;
-    if(q->raiz ==1){ 
-        reconstruirImagem(q->no, img, x,     y,     h,colunas);
-        reconstruirImagem(q->ne, img, x,     y + h, h,colunas);
-        reconstruirImagem(q->so, img, x + h, y,     h,colunas); 
-        reconstruirImagem(q->se, img, x + h, y + h, h,colunas);
+    int ha = altura / 2;
+    int wa = largura / 2;
+    if(q->raiz == 1){ 
+        reconstruirImagem(q->no, img, x,         y,         ha, wa, colunas);
+        reconstruirImagem(q->ne, img, x,         y + wa,    ha, largura - wa, colunas);
+        reconstruirImagem(q->so, img, x + ha,    y,         altura - ha, wa, colunas); 
+        reconstruirImagem(q->se, img, x + ha,    y + wa,    altura - ha, largura - wa, colunas);
     }
 }
 
-void colorirBloco(unsigned char *img,int x, int y, int tam,unsigned char valor,int colunas){
-    for (int i = 0; i < tam; i++){
-        for (int j = 0; j < tam; j++){
+void colorirBloco(unsigned char *img, int x, int y, int altura, int largura, unsigned char valor, int colunas){
+    for (int i = 0; i < altura; i++){
+        for (int j = 0; j < largura; j++){
             *(img + (x + i) * colunas + (y + j)) = valor;
         }
     }

@@ -29,8 +29,8 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 #include "struct.h"
 
 quadtree* reconstruirArvore(FILE *bitstream);
-void colorirBloco(unsigned char *img,int x, int y, int tam,unsigned char valor,int colunas);
-void reconstruirImagem(quadtree *q,unsigned char *img, int x, int y, int tamanho,int colunas);
+void colorirBloco(unsigned char *img, int x, int y, int altura, int largura, unsigned char valor, int colunas);
+void reconstruirImagem(quadtree *q, unsigned char *img, int x, int y, int altura, int largura, int colunas);
 int salvarPGM(const char *nome,unsigned char *pData,int colunas, int linhas,int valor_max);
 
 #endif

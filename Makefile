@@ -4,26 +4,25 @@ CFLAGS  = -Wall -Wextra -O2
 SRC     = src
 INC     = include
 
-MAIN    = $(wildcard $(SRC)/main.c $(SRC)/principal.c)
+COMMON = $(SRC)/codificador.o $(SRC)/decodificador.o $(SRC)/pgm.o $(SRC)/manipuladorDeBits.o
 
-SRCS    = $(filter-out $(MAIN), $(wildcard $(SRC)/*.c))
+all: encoder decoder
 
-MODULOS = $(patsubst $(SRC)/%.c, %.o, $(SRCS))
-
-TARGET  = TrabalhoLabProg
-
-all: $(TARGET)
-
-$(TARGET): $(MODULOS) $(MAIN:.c=.o)
+encoder: $(COMMON) $(SRC)/encoder.o
 	$(CC) $(CFLAGS) $^ -I$(INC) -o $@
-	@echo " -- Resultado gerado: ./$(TARGET)"
+	@echo " -- Resultado gerado: ./encoder"
+
+decoder: $(COMMON) $(SRC)/decoder.o
+	$(CC) $(CFLAGS) $^ -I$(INC) -o $@
+	@echo " -- Resultado gerado: ./decoder"
 
 %.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $< -I$(INC) -o $@
 
 run: all
-	./$(TARGET)
- 
+	./encoder
+	./decoder
+
 clean:
-	rm -f $(TARGET) *.o $(SRC)/*.o
+	rm -f encoder decoder *.o $(SRC)/*.o
 	@echo " -- Limpeza concluída"
