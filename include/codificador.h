@@ -26,7 +26,7 @@ Compilador: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 #define CODIFICADOR_H
 
 #include <stdio.h>
-#define LIMITE 21.205
+#define LIMITE 35.00 // 21.205 para imagens normais
 #include "struct.h"
 
 struct pgm;
