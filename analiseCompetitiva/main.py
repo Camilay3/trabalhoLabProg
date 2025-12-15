@@ -7,7 +7,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
-image_original = REPO_ROOT / 'dataset' / 'macaco.pgm'
+image_original = REPO_ROOT / 'dataset' / 'comp.pgm'
 image_new = REPO_ROOT / 'reconstruida.pgm'
 bitstream_path = REPO_ROOT / 'bitstream.bin'
 
