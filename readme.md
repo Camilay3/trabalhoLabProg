@@ -49,11 +49,11 @@
 ### Diretório `src/`
 *Arquivos em C:*
 - codificador.c  
+- encoder.c
 - decodificador.c  
-- pgm.c  
-- struct.c  
+- decoder.c
 - manipuladorDeBits.c 
-- main.c ou principal.c  
+- pgm.c  
 
 ## 3. Funcionalidades
 *As funcionalidades do projeto incluem desde a entrada da imagem do arquivo em pgm, seu processamento e sua compressão até a sua decodifiação para ser reconstruída de maneira comprimida e ser gerada para visualização. A seguir, segue de maneira listada cada uma dessas funcionalidades:*
@@ -74,8 +74,9 @@
 ## 4. Compilação
 **A compilação do projeto é feita de maneira sucinta e direta, exigindo apenas a utilização de 3 comandos:**
 - *Passo 1:* Digite o comando "`make`" no terminal (Esse comando é a ferramenta que executa ações baseadas em regras e dependências definidas no Makefile).
-- *Passo 2:* Digite o comando "`./TrabalhoLabProg dataset/img01.pgm bitstream.bin reconstruida01.pgm`" (Esse comando irá gerar a imagem que foi comprimida após sua reconstrução).
-- *Passo 3:* Digite o comando "make clean" (Esse comando irá limpar os arquivos `.o` gerados pelo `make` e permitirá que o comando make seja executado novamente).
+- *Passo 2:* Digite o comando "`./encoder ./dataset/img01.pgm bitstream.bin`" (Esse comando irá gerar o bitstream da imagem fornecida).
+- *Passo 3:* Digite o comando "`./decoder bitstream.bin reconstruida.pgm`" (Esse comando irá gerar a imagem que foi comprimida a partir do bitstream).
+- *Passo 4:* Digite o comando "make clean" (Esse comando irá limpar os arquivos `.o` gerados pelo `make` e permitirá que o comando make seja executado novamente).
 
 ## 5. Tecnologias
 *O projeto foi desenvolvido utilizando as seguintes tecnologias:*
